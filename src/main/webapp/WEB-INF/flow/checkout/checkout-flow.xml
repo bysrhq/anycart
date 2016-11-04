@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd"
+    start-state="getTransaction">
+    <var name="transaction" class="com.github.bysrhq.anycart.domain.Transaction"/>
+    
+    <action-state id="getTransaction">
+        <evaluate result="transaction" expression="transactionServiceImpl.getTransaction(requestParameters.id)"/>
+        <transition to="collectCostumerInfo"/>
+    </action-state>
+    <view-state id="collectCostumerInfo" view="customerForm" model="transaction">
+        <transition on="collect" to="updateTransaction"/>
+        <transition on="cancel" to="cancel"/>
+    </view-state>
+    <action-state id="updateTransaction">
+        <evaluate expression="transactionServiceImpl.updateTransaction(transaction)"/>
+        <transition to="confirmCart"/>
+    </action-state>
+    <view-state id="confirmCart" view="cartConfirmation">
+        <transition on="confirm" to="thanks"/>
+        <transition on="cancel" to="cancel"/>
+    </view-state>
+    <action-state id="cancel">
+        <evaluate expression="transactionServiceImpl.cancelTransaction(transaction.id)"/>
+        <transition to="thanks"/>
+    </action-state>
+    <end-state id="thanks" view="thanksPage"/>
+    
+    
+</flow>

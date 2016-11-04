@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <!-- Meta Tag Description -->
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Style Resources -->
+        <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+        <!-- Page Title -->
+        <title th:text="#{page.title.login}">Login Page</title>
+    </head>
+    <body>
+        <!-- Navigation Bar-->
+        <div class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toggle-menu">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">MultiCart</a>
+                </div>
+                <div class="collapse navbar-collapse" id="toggle-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="itemList.html" th:href="@{/item}" th:text="#{page.nav.navbar.item}">Item</a>
+                        </li>
+                        <li>
+                            <a href="cartForm.html" th:href="@{/cart}" th:text="#{page.nav.navbar.cart}">Cart</a>
+                        </li>
+                        <li>
+                            <a href="transactionForm.html" th:href="@{/transaction}" th:text="#{page.nav.navbar.transaction}">Transaction</a>
+                        </li>
+                        <li>
+                            <a href="itemForm.html" th:href="@{/item/add}" th:text="#{page.nav.navbar.addItem}">Add Item</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li sec:authorize="isAuthenticated()">
+                            <a href="#" th:text="#{page.nav.navbar.welcome}">Welcome, <span sec:authentication="name"></span></a>
+                        </li>
+                        <li sec:authorize="not isAuthenticated()">
+                            <a href="#"><span class="glyphicon glyphicon-log-in"></span></a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <form action="loginForm.html" th:action="@{/user/logout}" method="POST">
+                                <button class="btn btn-link navbar-btn" type="submit"><span class="glyphicon glyphicon-log-out"></span></button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <!-- Error Message Alert-->
+                <div class="col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
+                    <div class="alert alert-warning alert-dismissable">
+                        <button class="close" type="button" data-dismiss="alert">&times;</button>
+                        <span th:text="#{page.message.login}">Please login</span>
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Login</h3>
+                        </div>
+                        <div class="panel-body">
+                            <!-- Login Form -->
+                            <form class="form-horizontal" action="loginForm.html" th:action="@{/user/login}" th:object="${user}" method="POST">
+                                <!-- Input for username -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="username" th:text="#{form.label.user.username}">Username</label>
+                                    <div class="col-sm-8">
+                                        <input id="username" class="form-control" type="text" name="username" th:field="*{username}"/>
+                                    </div>
+                                </div>
+                                <!-- Input for passcode -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="passcode" th:text="#{form.label.user.passcode}">Passcode</label>
+                                    <div class="col-sm-8">
+                                        <input id="passcode" class="form-control" type="password" name="passcode" th:field="*{passcode}"/>
+                                    </div>
+                                </div>
+                                <!-- Checkbox for remember me -->
+                                <div class="form-group">
+                                    <div class="col-sm-offset-4 col-sm-8">
+                                        <input type="checkbox" name="remember-me"/> Remember Me
+                                    </div>
+                                </div>
+                                <!-- Button for login submission -->
+                                <div class="form-group">
+                                    <div class="col-sm-offset-4 col-sm-8">
+                                        <button class="btn btn-default" type="submit" th:text="#{form.button.user.login}">
+                                            <span class="glyphicon glyphicon-log-in"></span> Login</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- JavaScript Library Resoruces -->
+        <script src="../js/jquery-1.12.4.min.js" th:src="@{/js/jquery-1.12.4.min.js}"></script>
+        <script src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    </body>
+</html>

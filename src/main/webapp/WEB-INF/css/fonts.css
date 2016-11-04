@@ -1,0 +1,57 @@
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 300;
+  src: url('../fonts/FiraSans-Regular.woff');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 300;
+  font-style: italic;
+  src: url('../fonts/FiraSans-LightItalic.woff');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: normal;
+  src: url('../fonts/FiraSans-Regular.woff');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: bold;
+  src: url('../fonts/FiraSans-Bold.woff');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: bold;
+  font-style: italic;
+  src: url('../fonts/FiraSans-BoldItalic.woff');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 800;
+  src: url('../fonts/FiraSans-ExtraBold.woff');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-weight: 800;
+  font-style: italic;
+  src: url('../fonts/FiraSans-ExtraBoldItalic.woff');
+}
+@font-face {
+  font-family: 'Fira Mono';
+  font-weight: normal;
+  src: url('../fonts/FiraMono-Regular.woff');
+}
+@font-face {
+  font-family: 'Fira Mono';
+  font-weight: 500;
+  src: url('../fonts/FiraMono-Medium.woff');
+}
+@font-face {
+  font-family: 'Fira Mono';
+  font-weight: 700;
+  src: url('../fonts/FiraMono-Bold.woff');
+}
+
+html, body {
+    font-family: 'Fira Sans', sans-serif;
+}

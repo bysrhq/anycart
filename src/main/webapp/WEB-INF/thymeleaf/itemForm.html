@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <!-- Meta Tag Description -->
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Style Resources -->
+        <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+        <!-- Page Title -->
+        <title th:text="#{page.title.item.add}">Add Item | AnyCart</title>
+    </head>
+    <body>
+        <!-- Navigation Bar-->
+        <div class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toggle-menu">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">MultiCart</a>
+                </div>
+                <div class="collapse navbar-collapse" id="toggle-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="itemList.html" th:href="@{/item}" th:text="#{page.nav.navbar.item}">Item</a>
+                        </li>
+                        <li>
+                            <a href="cartForm.html" th:href="@{/cart}" th:text="#{page.nav.navbar.cart}">Cart</a>
+                        </li>
+                        <li>
+                            <a href="transactionForm.html" th:href="@{/transaction}" th:text="#{page.nav.navbar.transaction}">Transaction</a>
+                        </li>
+                        <li>
+                            <a href="itemForm.html" th:href="@{/item/add}" th:text="#{page.nav.navbar.addItem}">Add Item</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li sec:authorize="isAuthenticated()">
+                            <a href="#">Welcome, <span sec:authentication="name"/></a>
+                        </li>
+                        <li sec:authorize="not isAuthenticated()">
+                            <a href="#"><span class="glyphicon glyphicon-log-in"></span></a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <form action="loginForm.html" th:action="@{/user/logout}" method="POST">
+                                <button class="btn btn-link navbar-btn" type="submit"><span class="glyphicon glyphicon-log-out"></span></button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Add Item</h3>
+                        </div>
+                        <div class="panel-body">
+                        <!-- Item Form -->
+                            <form class="form-horizontal" action="itemForm.html" th:action="@{${#httpServletRequest.servletPath}}" th:object="${item}" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="name" th:text="#{form.label.item.name}">Name</label>
+                                    <div class="col-sm-9">
+                                        <input id="name" class="form-control" type="text" name="name" th:field="*{name}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="price" th:text="#{form.label.item.price}">Price</label>
+                                    <div class="col-sm-9">
+                                        <input id="price" class="form-control" type="text" name="price" th:field="*{price}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="quantity" th:text="#{form.label.item.quantity}">Qty</label>
+                                    <div class="col-sm-9">
+                                        <input id="quantity" class="form-control" type="text" name="quantity" th:field="*{quantity}"/>
+                                    </div>
+                                </div>
+                                <!-- Size input -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="size" th:text="#{form.label.item.size}">Size</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="size" th:field="*{size}">
+                                            <option th:each="size : ${sizes}" value="4B" th:value="${{size}}" th:text="${size.size}">A3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Color input -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="color" th:text="#{form.label.item.color}">Color</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="color" th:field="*{color}">
+                                            <option th:each="color : ${colors}" value="BIR" th:value="${{color}}" th:text="${color.color}">NONE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Brand input -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="brand" th:text="#{form.label.item.brand}">Brand</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="brand" th:field="*{brand}">
+                                            <option th:each="brand : ${brands}" value="SIN" th:value="${{brand}}" th:text="${brand.brand}">Kiky</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Category input -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="category" th:text="#{form.label.item.category}">Category</label>
+                                    <div class="col-sm-9">
+                                        <select id="category" class="form-control" th:field="*{category}">
+                                            <option th:each="category : ${categories}" value="SIN" th:value="${{category}}" th:text="${category.category}">Buku Gambar</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Image preview -->
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-9">
+                                        <img src="../img/nyancat.PNG" th:src="@{/img/{imgId}(imgId=${item.image})}" alt="an example image" width="250" height="250"/>
+                                    </div>
+                                </div>
+                                <!-- File input -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="file" th:text="#{form.label.file}">Image upload</label>
+                                    <div class="col-sm-9">
+                                        <input id="file" class="form-control" type="file" name="file" accept="image/png,image/jpg,image/jpeg"/>
+                                    </div>
+                                </div>
+                                <!-- Submit button -->
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-9">
+                                        <button class="btn btn-primary" type="submit" name="save" th:text="#{form.button.item.submit}">Save</button>
+                                        <button class="btn btn-default" type="submit" name="cancel" th:text="#{form.button.item.cancel}">Cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

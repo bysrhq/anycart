@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <!-- Meta Tag Description -->
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Style Resources -->
+        <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+        <!-- Page Title -->
+        <title th:text="#{page.title.login}">Login Page</title>
+    </head>
+    <body>
+        <!-- Navigation Bar-->
+        <div class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toggle-menu">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">AnyCart</a>
+                </div>
+                <div class="collapse navbar-collapse" id="toggle-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="itemList.html" th:href="@{/item}" th:text="#{page.nav.navbar.item}">Item</a>
+                        </li>
+                        <li>
+                            <a href="cartForm.html" th:href="@{/cart}" th:text="#{page.nav.navbar.cart}">Cart</a>
+                        </li>
+                        <li>
+                            <a href="transactionForm.html" th:href="@{/transaction}" th:text="#{page.nav.navbar.transaction}">Transaction</a>
+                        </li>
+                        <li>
+                            <a href="itemForm.html" th:href="@{/item/add}" th:text="#{page.nav.navbar.addItem}">Add Item</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li sec:authorize="isAuthenticated()">
+                            <a href="#">Welcome, <span sec:authentication="name"/></a>
+                        </li>
+                        <li sec:authorize="not isAuthenticated()">
+                            <a href="#"><span class="glyphicon glyphicon-log-in"></span></a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <form action="loginForm.html" th:action="@{/user/logout}" method="POST">
+                                <button class="btn btn-link navbar-btn" type="submit"><span class="glyphicon glyphicon-log-out"></span></button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Page -->
+        <div class="container">            
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <ul class="pager">
+                                <li class="previous"><a href="itemList.html" th:href="@{/item(min=${min - 12}, count=${count}, query=${query})}">Back</a></li>
+                                <li class="next"><a href="itemList.html" th:href="@{/item(min=${min + 12}, count=${count}, query=${query})}">Previous</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4" th:each="item : ${items}">
+                            <div class="thumbnail">
+                                <img src="../img/nyancat.PNG" th:src="@{/img/{imgId}(imgId=${item.image})}" alt="an example image"/>
+                                <div class="caption">
+                                    <h4 th:text="${item.name}">Thumbnail label</h4>
+                                    <p>
+                                        <span th:utext="#{page.list.item.price(${item.price})}"></span>.
+                                        <span th:utext="#{page.list.item.quantity(${item.quantity})}"></span>.
+                                    </p>
+                                    <ul class="list-unstyled list-inline">
+                                        <li><a href="#" th:href="@{/cart/add(itemId=${item.id})}" class="btn btn-primary" th:utext="#{page.list.item.link.addToCart}">Add to Cart</a></li>
+                                        <li><a href="#" th:href="@{/item/edit(id=${item.id})}" class="btn btn-link" th:utext="#{page.list.item.link.update}"></a></li>
+                                        <li><a href="#" th:href="@{/item/delete(id=${item.id})}" class="btn btn-link" th:utext="#{page.list.item.link.delete}">Del</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <ul class="pager">
+                                <li class="previous"><a href="itemTable.html" th:href="@{/item(min=${min - 12}, count=${count}, query=${query})}">Back</a></li>
+                                <li class="next"><a href="itemTable.html" th:href="@{/item(min=${min + 12}, count=${count}, query=${query})}">Previous</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-3">
+                    <div class="row">
+                        <div style="padding-top: 15px; padding-bottom: 15px;" class="col-xs-12">
+                            <form class="form-inline">
+                                <div class="input-group">
+                                    <input class="form-control" name="query" placeholder="search here ..."/>
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit" name="search">Search</button> 
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                        <div class="panel-heading" th:text="#{page.panel.title.category}">Category</div>
+                        <div class="list-group">
+                            <a class="list-group-item" href="itemList.html" th:href="@{/item(min=0, count=12)}">All</a>
+                            <a th:each="category : ${categories}"
+                               class="list-group-item" href="itemList.html" th:href="@{/item(min=0, count=12, query='category ' + ${{category}} )}" th:text="${category.category}">Loose Book</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

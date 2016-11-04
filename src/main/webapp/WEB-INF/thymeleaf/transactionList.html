@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <!-- Meta Tag Description -->
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Style Resources -->
+        <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+        <!-- Page Title -->
+        <title th:text="#{page.title.transaction.list}">Transaction List | AnyCart</title>
+    </head>
+    <body>
+        <!-- Navigation Bar-->
+        <div class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toggle-menu">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">MultiCart</a>
+                </div>
+                <div class="collapse navbar-collapse" id="toggle-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="itemList.html" th:href="@{/item}" th:text="#{page.nav.navbar.item}">Item</a>
+                        </li>
+                        <li>
+                            <a href="cartForm.html" th:href="@{/cart}" th:text="#{page.nav.navbar.cart}">Cart</a>
+                        </li>
+                        <li>
+                            <a href="transactionForm.html" th:href="@{/transaction}" th:text="#{page.nav.navbar.transaction}">Transaction</a>
+                        </li>
+                        <li>
+                            <a href="itemForm.html" th:href="@{/item/add}" th:text="#{page.nav.navbar.addItem}">Add Item</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li sec:authorize="isAuthenticated()">
+                            <a href="#" th:text="#{page.nav.navbar.welcome}">Welcome, <span sec:authentication="name"></span></a>
+                        </li>
+                        <li sec:authorize="not isAuthenticated()">
+                            <a href="#"><span class="glyphicon glyphicon-log-in"></span></a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <form action="loginForm.html" th:action="@{/user/logout}" method="POST">
+                                <button class="btn btn-link navbar-btn" type="submit"><span class="glyphicon glyphicon-log-out"></span></button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Transaction List</h3>
+                        </div>
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th th:text="#{table.th.transaction.no}">#</th>
+                                    <th th:text="#{table.th.transaction.id}">ID</th>
+                                    <th th:text="#{table.th.transaction.date}">Date Ordered</th>
+                                    <th th:text="#{table.th.transaction.total}">Total</th>
+                                    <th th:text="#{table.th.transaction.status}">Status</th>
+                                    <th th:utext="#{table.th.transaction.opt}">Opt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="transaction, rowStat : ${transactions}">
+                                    <td th:text="${rowStat.count}"></td>
+                                    <td th:text="${transaction.id}"></td>
+                                    <td th:text="${{transaction.date}}"></td>
+                                    <td th:text="${transaction.total}"></td>
+                                    <td th:text="${transaction.status} ? 'paid' : 'unpaid'"></td>
+                                    <td>
+                                        <a class="btn btn-link" href="transactionForm.html" th:href="@{/transaction/{id}(id=${transaction.id})}" th:utext="#{table.td.transaction.edit}">Edit</a>
+                                        <a class="btn btn-link" href="transactionForm.html" th:href="@{/transaction/delete(id=${transaction.id})}" th:utext="#{table.td.transaction.delete}">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xs-12">
+                        <ul class="pager">
+                            <li class="previous" ><a href="transactionList.html" th:href="@{/transaction(min=${min-30}, count=${30})}">Previous</a></li>
+                            <li class="next" ><a href="transactionList.html" th:href="@{/transaction(min=${min+30}, count=${30})}">Next</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <!-- Meta Tag Description -->
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Style Resources -->
+        <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+        <!-- Page Title -->
+        <title th:text="#{page.title.cart}">Cart | AnyCart</title>
+    </head>
+    <body>
+        <!-- Navigation Bar-->
+        <div class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toggle-menu">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">MultiCart</a>
+                </div>
+                <div class="collapse navbar-collapse" id="toggle-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="itemList.html" th:href="@{/item}" th:text="#{page.nav.navbar.item}">Item</a>
+                        </li>
+                        <li>
+                            <a href="cartForm.html" th:href="@{/cart}" th:text="#{page.nav.navbar.cart}">Cart</a>
+                        </li>
+                        <li>
+                            <a href="transactionForm.html" th:href="@{/transaction}" th:text="#{page.nav.navbar.transaction}">Transaction</a>
+                        </li>
+                        <li>
+                            <a href="itemForm.html" th:href="@{/item/add}" th:text="#{page.nav.navbar.addItem}">Add Item</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li sec:authorize="isAuthenticated()">
+                            <a href="#" th:text="#{page.nav.navbar.welcome}">Welcome, <span sec:authentication="name"></span></a>
+                        </li>
+                        <li sec:authorize="not isAuthenticated()">
+                            <a href="#"><span class="glyphicon glyphicon-log-in"></span></a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <form action="loginForm.html" th:action="@{/user/logout}" method="POST">
+                                <button class="btn btn-link navbar-btn" type="submit"><span class="glyphicon glyphicon-log-out"></span></button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+           <div class="row">
+                <div class="col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
+                    <!-- Transaction Detail Table -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Thank You</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-xs-12">
+                                <p class="text-center">Thank you for ordering</p>
+                                <p class="text-center"><a class="btn btn-primary" href="random" th:href="@{/item}">Back to Item</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

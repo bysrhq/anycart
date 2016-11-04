@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <!-- Meta Tag Description -->
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Style Resources -->
+        <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+        <!-- Page Title -->
+        <title th:text="#{page.title.cart}">Cart | AnyCart</title>
+    </head>
+    <body>
+        <!-- Navigation Bar-->
+        <div class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toggle-menu">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">MultiCart</a>
+                </div>
+                <div class="collapse navbar-collapse" id="toggle-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="itemList.html" th:href="@{/item}" th:text="#{page.nav.navbar.item}">Item</a>
+                        </li>
+                        <li>
+                            <a href="cartForm.html" th:href="@{/cart}" th:text="#{page.nav.navbar.cart}">Cart</a>
+                        </li>
+                        <li>
+                            <a href="transactionForm.html" th:href="@{/transaction}" th:text="#{page.nav.navbar.transaction}">Transaction</a>
+                        </li>
+                        <li>
+                            <a href="itemForm.html" th:href="@{/item/add}" th:text="#{page.nav.navbar.addItem}">Add Item</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li sec:authorize="isAuthenticated()">
+                            <a href="#" th:text="#{page.nav.navbar.welcome}">Welcome, <span sec:authentication="name"></span></a>
+                        </li>
+                        <li sec:authorize="not isAuthenticated()">
+                            <a href="#"><span class="glyphicon glyphicon-log-in"></span></a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <form action="loginForm.html" th:action="@{/user/logout}" method="POST">
+                                <button class="btn btn-link navbar-btn" type="submit"><span class="glyphicon glyphicon-log-out"></span></button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <form action="cartForm.html" th:action="@{${#httpServletRequest.servletPath}}" th:object="${transaction}" method="post">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Items in Cart</h3>
+                            </div>
+                            <!-- Transaction Detail Table -->
+                            <table class="table table-striped table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th th:text="#{table.th.transaction.detail.no}">#</th>
+                                        <th th:text="#{table.th.transaction.detail.item.name}">Name</th>
+                                        <th th:text="#{table.th.transaction.detail.quantity}">Qty</th>
+                                        <th th:text="#{table.th.transaction.detail.item.price}">Price</th>
+                                        <th th:text="#{table.th.transaction.detail.subTotal}">Sub Total</th>
+                                        <th th:utext="#{table.th.transaction.detail.option}">Opt</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="transactionDetail, rowStat : *{transactionDetails}">
+                                        <td><p class="form-control-static" th:text="${rowStat.count}">1</p></td>
+                                        <td><p class="form-control-static" th:text="${transactionDetail.item.name}">Faber Castle 2000F 2B</p></td>
+                                        <td class="col-xs-1"><input id="qty" class="form-control" type="text" name="qty" th:field="*{transactionDetails[__${rowStat.index}__].quantity}"/></td>
+                                        <td><p class="form-control-static" th:text="${transactionDetail.item.price}">50000</p></td>
+                                        <td><p class="form-control-static" th:text="${transactionDetail.subTotal}">15000</p></td>
+                                        <td>
+                                            <button class="btn btn-link" type="submit" name="update" th:value="${rowStat.index}"><span class="glyphicon glyphicon-refresh"></span></button>
+                                            <button class="btn btn-link" type="submit" name="delete" th:value="${rowStat.index}"><span class="glyphicon glyphicon-remove"></span></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Cart Info</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="sales" th:text="#{form.label.transaction.sales}">Sales</label>
+                                    <input id="sales" class="form-control" type="text" name="sales" th:field="*{sales}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="total" th:text="#{form.label.transaction.total}">Total</label>
+                                    <input id="total" class="form-control" type="text" name="total" th:field="*{total}"/>
+                                </div>
+                                <button class="btn btn-primary" type="submit" name="checkout"><span class="glyphicon glyphicon-check"></span> Checkout</button>
+                                <button class="btn btn-link" type="submit" name="cancel"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
